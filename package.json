@@ -1,0 +1,42 @@
+{
+    "name": "supashim",
+    "version": "0.0.1",
+    "description": "Use supabase as a drop-in replacement for Firebase",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "sideEffects": false,
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "prepare": "husky install",
+        "clean": "rimraf dist",
+        "build:umd": "webpack",
+        "test": "jest",
+        "test:watch": "jest --watch --verbose false --silent false"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/roboflow/supashim.git"
+    },
+    "author": "Roboflow",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/roboflow/supashim/issues"
+    },
+    "homepage": "https://github.com/roboflow/supashim#readme",
+    "lint-staged": {
+        "*.{js,ts,json,md,jsx,tsx,css,scss}": "prettier --write"
+    },
+    "devDependencies": {
+        "husky": "^8.0.3",
+        "jest": "^29.4.0",
+        "lint-staged": "^13.1.0",
+        "prettier": "^2.8.3",
+        "rimraf": "^4.1.2",
+        "webpack": "^5.75.0",
+        "webpack-cli": "^5.0.1"
+    },
+    "jsdelivr": "dist/umd/supashim.js",
+    "unpkg": "dist/umd/supashim.js"
+}

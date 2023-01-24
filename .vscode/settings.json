@@ -1,0 +1,40 @@
+{
+    "editor.tabSize": 4,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.formatOnSave": true,
+    "git.autofetch": true,
+    "javascript.suggest.autoImports": false,
+    "search.followSymlinks": false,
+    "search.exclude": {
+        "**/dist": true
+    },
+    "files.associations": {
+        "*.js": "javascript"
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.tabSize": 4
+    },
+    "[typescript]": {
+        "editor.tabSize": 4,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.tabSize": 4,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.tabSize": 4,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[scss]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "cSpell.words": ["esversion", "firestore", "FIRESTORE", "roboflow"]
+}
