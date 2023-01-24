@@ -11,7 +11,8 @@
     "scripts": {
         "prepare": "husky install",
         "clean": "rimraf dist",
-        "build:umd": "webpack",
+        "build": "webpack",
+        "build:dev": "webpack --env dev --mode=development --watch",
         "test": "jest",
         "test:watch": "jest --watch --verbose false --silent false"
     },
