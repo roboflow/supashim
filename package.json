@@ -30,14 +30,22 @@
         "*.{js,ts,json,md,jsx,tsx,css,scss}": "prettier --write"
     },
     "devDependencies": {
+        "@types/jest": "^29.2.6",
         "husky": "^8.0.3",
         "jest": "^29.4.0",
         "lint-staged": "^13.1.0",
         "prettier": "^2.8.3",
         "rimraf": "^4.1.2",
+        "ts-jest": "^29.0.5",
+        "ts-loader": "^9.4.2",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.9.4",
         "webpack": "^5.75.0",
         "webpack-cli": "^5.0.1"
     },
     "jsdelivr": "dist/umd/supashim.js",
-    "unpkg": "dist/umd/supashim.js"
+    "unpkg": "dist/umd/supashim.js",
+    "dependencies": {
+        "@supabase/supabase-js": "^2.4.1"
+    }
 }
