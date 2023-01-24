@@ -5,6 +5,9 @@ function pinkyPromise() {
 }
 
 export default class DocumentReference {
+    public parent;
+    public id;
+
     constructor(parent, id) {
         this.parent = parent;
         this.id = id;
