@@ -3,7 +3,7 @@
     postgres database via remote procedure calls
 */
 
-const supabase = require("../Supabase.js");
+const supabase = require("../Supabase");
 
 export default class RPC {
     /*

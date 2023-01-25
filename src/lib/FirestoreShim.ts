@@ -1,7 +1,7 @@
 function noop() {}
 
 import CollectionReference from "./firestore/CollectionReference";
-const supabase = require("./Supabase.js");
+const supabase = require("./Supabase");
 
 import Settings from "./Settings";
 const globalSettings = Settings(true);
