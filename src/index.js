@@ -5,9 +5,15 @@ function notYetImplemented(method) {
     };
 }
 
+const Settings = require("./lib/settings.ts").default;
+const globalSettings = Settings(true, {
+    autoCreateTables: false
+});
+
 module.exports = {
     "createClient": require("./lib/supabase.js").createClient,
     "supabase": require("./lib/supabase.js").client,
+    "settings": globalSettings,
 
     "analytics": notYetImplemented("analytics"),
     "app-check": notYetImplemented("app-check"),

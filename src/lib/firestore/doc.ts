@@ -1,4 +1,6 @@
 import CollectionReference from "./collection.ts";
+import Settings from "../settings.ts";
+const globalSettings = Settings(true);
 
 function pinkyPromise() {
     return new Promise(function (resolve, reject) {});
@@ -22,7 +24,7 @@ export default class DocumentReference {
     }
 
     set(val, options) {
-        console.log("set document", this.parent.path, this.id, val);
+        console.log("set document", this.parent.path, this.id, val, options);
         return pinkyPromise();
     }
 
@@ -32,7 +34,14 @@ export default class DocumentReference {
     }
 
     get() {
+        if (this.parent.path.indexOf("/") >= 0) {
+            throw new Error(
+                `get document for subcollections not yet implemented; path: ${this.parent.path}, doc: ${this.id}`
+            );
+        }
+
         console.log("get document", this.parent.path, this.id);
+        console.log("AUTO CREATE", globalSettings().autoCreateTables);
         return pinkyPromise();
     }
 }

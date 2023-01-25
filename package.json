@@ -46,6 +46,8 @@
     "jsdelivr": "dist/umd/supashim.js",
     "unpkg": "dist/umd/supashim.js",
     "dependencies": {
-        "@supabase/supabase-js": "^2.4.1"
+        "@supabase/supabase-js": "^2.4.1",
+        "async": "^3.2.4",
+        "lodash": "^4.17.21"
     }
 }

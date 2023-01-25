@@ -36,5 +36,5 @@
     "[scss]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "cSpell.words": ["esversion", "firestore", "FIRESTORE", "roboflow"]
+    "cSpell.words": ["esversion", "firestore", "FIRESTORE", "roboflow", "supabase"]
 }
