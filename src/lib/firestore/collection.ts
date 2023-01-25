@@ -16,6 +16,10 @@ export default class CollectionReference {
         this.db = shim.client;
     }
 
+    tableName() {
+        return `supashim_${this.path}`;
+    }
+
     where(prop, op, value) {
         return this;
     }
