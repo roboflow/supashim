@@ -1,5 +1,6 @@
-import CollectionReference from "./collection.ts";
-import Settings from "../settings.ts";
+import CollectionReference from "./collection";
+
+import Settings from "../settings";
 const globalSettings = Settings(true);
 
 function pinkyPromise() {
@@ -7,16 +8,19 @@ function pinkyPromise() {
 }
 
 export default class DocumentReference {
-    public parent;
-    public id;
+    public readonly parent: CollectionReference;
+    public readonly id: string;
+    public readonly db: any;
 
     constructor(parent, id) {
         this.parent = parent;
         this.id = id;
+
+        this.db = parent.db;
     }
 
     collection(path) {
-        return new CollectionReference(path);
+        return new CollectionReference(this.parent.shim, path);
     }
 
     onSnapshot(cb) {
@@ -33,7 +37,7 @@ export default class DocumentReference {
         return pinkyPromise();
     }
 
-    get() {
+    async get() {
         if (this.parent.path.indexOf("/") >= 0) {
             throw new Error(
                 `get document for subcollections not yet implemented; path: ${this.parent.path}, doc: ${this.id}`
@@ -42,6 +46,10 @@ export default class DocumentReference {
 
         console.log("get document", this.parent.path, this.id);
         console.log("AUTO CREATE", globalSettings().autoCreateTables);
-        return pinkyPromise();
+
+        const { data, error } = await this.db.from(this.parent.path).select("*").eq("id", this.id);
+        console.log({ data, error });
+
+        await pinkyPromise();
     }
 }

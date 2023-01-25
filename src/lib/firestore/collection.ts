@@ -1,13 +1,15 @@
-import DocumentReference from "./doc.ts";
-import Settings from "../settings.ts";
+import type { FirestoreShim } from "../firestore";
+
+import DocumentReference from "./doc";
+import Settings from "../settings";
 const globalSettings = Settings(true);
 
 export default class CollectionReference {
-    public path: string;
-    public shim: FirestoreShim;
-    public db;
+    public readonly path: string;
+    public readonly shim: FirestoreShim;
+    public readonly db: any;
 
-    constructor(shim, path) {
+    constructor(shim: FirestoreShim, path) {
         this.path = path;
 
         this.shim = shim;
