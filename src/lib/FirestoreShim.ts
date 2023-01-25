@@ -1,9 +1,9 @@
 function noop() {}
 
-import CollectionReference from "./firestore/collection";
-const supabase = require("../lib/supabase.js");
+import CollectionReference from "./firestore/CollectionReference";
+const supabase = require("./Supabase.js");
 
-import Settings from "./settings";
+import Settings from "./Settings";
 const globalSettings = Settings(true);
 
 export class FirestoreShim {

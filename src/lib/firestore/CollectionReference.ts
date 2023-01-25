@@ -1,7 +1,7 @@
-import type { FirestoreShim } from "../firestore";
+import type { FirestoreShim } from "../FirestoreShim";
 
-import DocumentReference from "./doc";
-import Settings from "../settings";
+import DocumentReference from "./DocumentReference";
+import Settings from "../Settings";
 const globalSettings = Settings(true);
 
 export default class CollectionReference {

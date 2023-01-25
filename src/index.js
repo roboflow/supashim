@@ -5,14 +5,14 @@ function notYetImplemented(method) {
     };
 }
 
-const Settings = require("./lib/settings.ts").default;
+const Settings = require("./lib/Settings").default;
 const globalSettings = Settings(true, {
     autoCreateTables: false
 });
 
 module.exports = {
-    "createClient": require("./lib/supabase.js").createClient,
-    "supabase": require("./lib/supabase.js").client,
+    "createClient": require("./lib/Supabase").createClient,
+    "supabase": require("./lib/Supabase").client,
     "settings": globalSettings,
 
     "analytics": notYetImplemented("analytics"),
@@ -20,7 +20,7 @@ module.exports = {
     "app": notYetImplemented("app"),
     "auth": notYetImplemented("auth"),
     "database": notYetImplemented("database"),
-    "firestore": require("./lib/firestore").default,
+    "firestore": require("./lib/FirestoreShim").default,
     "functions": notYetImplemented("functions"),
     "initializeApp": notYetImplemented("initializeApp"),
     "messaging": notYetImplemented("messaging"),

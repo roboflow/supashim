@@ -1,10 +1,10 @@
-import CollectionReference from "./collection";
+import CollectionReference from "./CollectionReference";
 import DocumentSnapshot from "./DocumentSnapshot";
 
-import Settings from "../settings";
+import Settings from "../Settings";
 const globalSettings = Settings(true);
 
-import RPC from "./rpc";
+import RPC from "./RPC";
 
 function pinkyPromise() {
     return new Promise(function (resolve, reject) {});
