@@ -50,6 +50,8 @@ export default class RPC {
         to update the PostgREST schema cache.
     */
     static async create_supashim_table(table_name) {
+        console.log("create_supashim_table", table_name);
+
         if (table_name.indexOf("supashim_") !== 0) {
             throw new Error("table name must be prefixed with supashim_");
         }

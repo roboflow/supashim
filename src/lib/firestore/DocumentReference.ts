@@ -23,21 +23,15 @@ export default class DocumentReference {
     }
 
     collection(path) {
-        return new CollectionReference(this.parent.shim, path);
+        return new CollectionReference(this.parent.shim, [this.parent.path, path].join("/"));
     }
 
     onSnapshot(cb) {
         console.log("onSnapshot document", this.parent.path, this.id);
-    }
 
-    set(val, options) {
-        console.log("set document", this.parent.path, this.id, val, options);
-        return pinkyPromise();
-    }
-
-    update(val) {
-        console.log("update document", this.parent.path, this.id, val);
-        return pinkyPromise();
+        this.get().then(function (snapshot) {
+            cb(snapshot);
+        });
     }
 
     async get() {
@@ -48,30 +42,38 @@ export default class DocumentReference {
         }
 
         console.log("get document", this.parent.path, this.id);
-        console.log("AUTO CREATE", globalSettings().autoCreateTables);
 
         const { data, error } = await this.db
             .from(this.parent.tableName())
             .select("*")
             .eq("id", this.id);
 
-        console.log(this.parent.path, this.id, { data, error });
-
         if (error && error.code === "42P01") {
             // table does not exist
             if (globalSettings().autoCreateTables) {
                 const { data, error } = await RPC.create_supashim_table(this.parent.tableName());
-                console.log("create_supashim_table", this.parent.tableName(), { data, error });
 
                 // retry if table was created
                 if (!error) {
-                    await this.get();
+                    return await this.get();
                 } else {
                     throw new Error(error.message);
                 }
             }
+        } else if (error) {
+            throw new Error(error.message);
         }
 
-        return new DocumentSnapshot(this, data);
+        return new DocumentSnapshot(this, data && data[0]);
+    }
+
+    set(val, options) {
+        console.log("set document", this.parent.path, this.id, val, options);
+        return pinkyPromise();
+    }
+
+    update(val) {
+        console.log("update document", this.parent.path, this.id, val);
+        return pinkyPromise();
     }
 }
