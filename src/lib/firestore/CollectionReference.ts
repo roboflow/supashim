@@ -1,3 +1,5 @@
+// https://firebase.google.com/docs/reference/js/v8/firebase.firestore.CollectionReference
+
 import type { FirestoreShim } from "../FirestoreShim";
 
 import DocumentReference from "./DocumentReference";
@@ -9,7 +11,7 @@ export default class CollectionReference {
     public readonly shim: FirestoreShim;
     public readonly db: any;
 
-    constructor(shim: FirestoreShim, path) {
+    constructor(shim: FirestoreShim, path, pathValues = []) {
         this.path = path;
 
         this.shim = shim;

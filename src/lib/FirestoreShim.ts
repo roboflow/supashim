@@ -25,10 +25,18 @@ function shim() {
 }
 
 shim.FieldValue = {
-    serverTimestamp: noop,
-    increment: noop,
-    arrayUnion: noop,
-    arrayRemove: noop
+    serverTimestamp: function () {
+        return Date.now();
+    },
+    increment: function (amount) {
+        return `INC ${amount}`;
+    },
+    arrayUnion: function (...values) {
+        return `UNION ${values}`;
+    },
+    arrayRemove: function (...values) {
+        return `REMOVE ${values}`;
+    }
 };
 
 export default shim;

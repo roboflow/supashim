@@ -8,8 +8,9 @@ const supabase = require("../Supabase");
 export default class RPC {
     /*
         use supabase to create a table named `table_name`
-        with two columns:
+        with three columns:
             * id (string representing the Firestore document ID)
+            * path (jsonb column representing path components for nested subcollections; defaults to {})
             * data (jsonb column with the document's data)
     
         This happens via a Postgres RPC to `create_supashim_table`
@@ -23,6 +24,9 @@ export default class RPC {
 
         You'll need to setup the following RPC in your Postgres database:
         ```
+            # in the event you want to re-initialize the supashim database tables, uncomment this line:
+            # SELECT 'drop table "' || tablename || '" cascade;' from pg_tables WHERE tablename LIKE 'supashim_%';
+
             CREATE OR REPLACE FUNCTION public.create_supashim_table(name text)
             RETURNS text
             SECURITY DEFINER
@@ -32,6 +36,7 @@ export default class RPC {
                 IF name LIKE 'supashim_%' THEN
                     EXECUTE 'CREATE TABLE IF NOT EXISTS ' || quote_ident(name) || ' (
                         id text,
+                        path jsonb DEFAULT ''[]''::jsonb,
                         data jsonb,
                         PRIMARY KEY (id)
                     )';
@@ -41,14 +46,13 @@ export default class RPC {
                 END IF;
             END;
             $$;
-        ```
 
-        Then run
-        ```
             NOTIFY pgrst, 'reload schema'
         ```
-        to update the PostgREST schema cache.
     */
+
+    // prevent multiple subsequent calls to create_supashim_table from trying to create multiple tables
+    private static tableCreationPromises = {};
     static async create_supashim_table(table_name) {
         console.log("create_supashim_table", table_name);
 
@@ -56,9 +60,14 @@ export default class RPC {
             throw new Error("table name must be prefixed with supashim_");
         }
 
-        const { data, error } = await supabase.client().rpc("create_supashim_table", {
-            name: table_name
-        });
+        const tableCreationPromise = RPC.tableCreationPromises[table_name]
+            ? RPC.tableCreationPromises[table_name] // use existing promise if it exists
+            : supabase.client().rpc("create_supashim_table", {
+                  name: table_name
+              });
+        RPC.tableCreationPromises[table_name] = tableCreationPromise;
+
+        const { data, error } = await tableCreationPromise;
 
         if (error) {
             console.error("error creating table", error);

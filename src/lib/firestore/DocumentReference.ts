@@ -1,3 +1,5 @@
+// https://firebase.google.com/docs/reference/js/v8/firebase.firestore.DocumentReference
+
 import CollectionReference from "./CollectionReference";
 import DocumentSnapshot from "./DocumentSnapshot";
 
@@ -35,12 +37,6 @@ export default class DocumentReference {
     }
 
     async get() {
-        if (this.parent.path.indexOf("/") >= 0) {
-            throw new Error(
-                `get document for subcollections not yet implemented; path: ${this.parent.path}, doc: ${this.id}`
-            );
-        }
-
         console.log("get document", this.parent.path, this.id);
 
         const { data, error } = await this.db
@@ -67,9 +63,30 @@ export default class DocumentReference {
         return new DocumentSnapshot(this, data && data[0]);
     }
 
-    set(val, options) {
+    async set(val, options) {
         console.log("set document", this.parent.path, this.id, val, options);
-        return pinkyPromise();
+
+        // do an upsert
+        const { data, error } = await this.db
+            .from(this.parent.tableName())
+            .upsert({ id: this.id, data: val })
+            .select();
+
+        if (error && error.code === "42P01") {
+            // table does not exist
+            if (globalSettings().autoCreateTables) {
+                const { data, error } = await RPC.create_supashim_table(this.parent.tableName());
+
+                // retry if table was created
+                if (!error) {
+                    return await this.set(val, options);
+                } else {
+                    throw new Error(error.message);
+                }
+            }
+        } else if (error) {
+            throw new Error(error.message);
+        }
     }
 
     update(val) {

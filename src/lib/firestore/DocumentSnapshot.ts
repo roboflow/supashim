@@ -1,3 +1,5 @@
+// https://firebase.google.com/docs/reference/js/v8/firebase.firestore.DocumentSnapshot
+
 import DocumentReference from "./DocumentReference";
 
 export default class DocumentSnapshot {
