@@ -1,0 +1,17 @@
+{
+    "name": "supashim/utils",
+    "version": "1.0.0",
+    "description": "Util scripts that can be used with supashim",
+    "main": "export.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Roboflow",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "async": "^3.2.4",
+        "event-stream": "^4.0.1",
+        "firebase-admin": "^11.5.0",
+        "lodash": "^4.17.21"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "collection_1": {
+        "subcollection_1": {
+            "nested_subcollection_1": true,
+            "nested_subcollection_2": true
+        },
+        "subcollection_2": true
+    },
+    "collection_2": true
+}

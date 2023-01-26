@@ -3,6 +3,10 @@
 config/
 .env.local
 
+
+utils/*.jsonl
+utils/collections.json
+
 # Logs
 logs
 *.log

@@ -13,6 +13,7 @@ src
 test
 examples
 umd_temp
+utils
 CHANGELOG.md
 .travis.yml
 .editorconfig
