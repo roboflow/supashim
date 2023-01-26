@@ -25,7 +25,7 @@ export default class DocumentReference {
     }
 
     collection(path) {
-        return new CollectionReference(this.parent.shim, [this.parent.path, path].join("/"));
+        return new CollectionReference(this.parent.shim, [this.parent.path, path].join(":"));
     }
 
     onSnapshot(cb) {
