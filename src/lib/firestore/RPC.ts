@@ -9,8 +9,8 @@ export default class RPC {
     /*
         use supabase to create a table named `table_name`
         with three columns:
+            * path (text column representing path components for nested subcollections; defaults to empty string which means top-level collection)
             * id (string representing the Firestore document ID)
-            * path (jsonb column representing path components for nested subcollections; defaults to {})
             * data (jsonb column with the document's data)
     
         This happens via a Postgres RPC to `create_supashim_table`
@@ -24,21 +24,27 @@ export default class RPC {
 
         You'll need to setup the following RPC in your Postgres database:
         ```
-            # in the event you want to re-initialize the supashim database tables, uncomment this line:
-            # SELECT 'drop table "' || tablename || '" cascade;' from pg_tables WHERE tablename LIKE 'supashim_%';
+            # in the event you want to re-initialize the supashim database tables, uncomment these lines:
+            # DO $$ DECLARE
+            #   r RECORD;
+            # BEGIN
+            #   FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = current_schema() AND tablename LIKE 'supashim_%') LOOP
+            #       EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
+            #   END LOOP;
+            # END $$;
 
-            CREATE OR REPLACE FUNCTION public.create_supashim_table(name text)
-            RETURNS text
+            CREATE OR REPLACE FUNCTION public.create_supashim_table(name TEXT)
+            RETURNS TEXT
             SECURITY DEFINER
             LANGUAGE plpgsql
             AS $$
             BEGIN
                 IF name LIKE 'supashim_%' THEN
                     EXECUTE 'CREATE TABLE IF NOT EXISTS ' || quote_ident(name) || ' (
-                        id text,
-                        path jsonb DEFAULT ''[]''::jsonb,
+                        path TEXT NOT NULL DEFAULT '''',
+                        id TEXT NOT NULL,
                         data jsonb,
-                        PRIMARY KEY (id)
+                        PRIMARY KEY (path, id)
                     )';
                     RETURN 'ok';
                 ELSE

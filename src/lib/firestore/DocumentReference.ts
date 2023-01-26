@@ -31,13 +31,26 @@ export default class DocumentReference {
     onSnapshot(cb) {
         console.log("onSnapshot document", this.parent.path, this.id);
 
-        this.get().then(function (snapshot) {
-            cb(snapshot);
-        });
+        // hack until we get realtime wired up
+        const _this = this;
+        var previousValue = undefined;
+        var interval = setInterval(function () {
+            _this.get(true).then(function (snapshot) {
+                if (previousValue !== snapshot._data) {
+                    console.log(_this.parent.path, snapshot.id, snapshot._data);
+                    cb(snapshot);
+                }
+                previousValue = snapshot._data;
+            });
+        }, 2500);
+
+        return function () {
+            clearInterval(interval);
+        };
     }
 
-    async get() {
-        console.log("get document", this.parent.path, this.id);
+    async get(quiet = false) {
+        if (!quiet) console.log("get document", this.parent.path, this.id);
 
         const { data, error } = await this.db
             .from(this.parent.tableName())
@@ -60,16 +73,16 @@ export default class DocumentReference {
             throw new Error(error.message);
         }
 
-        return new DocumentSnapshot(this, data && data[0]);
+        return new DocumentSnapshot(this, data && data[0] && data[0].data);
     }
 
-    async set(val, options) {
+    async set(val, options = {}) {
         console.log("set document", this.parent.path, this.id, val, options);
 
         // do an upsert
         const { data, error } = await this.db
             .from(this.parent.tableName())
-            .upsert({ id: this.id, data: val })
+            .upsert({ id: this.id, data: val }, { onConflict: "path, id", ignoreDuplicates: false })
             .select();
 
         if (error && error.code === "42P01") {
@@ -89,8 +102,9 @@ export default class DocumentReference {
         }
     }
 
-    update(val) {
+    async update(val) {
         console.log("update document", this.parent.path, this.id, val);
-        return pinkyPromise();
+
+        return await this.set(val);
     }
 }
