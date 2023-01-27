@@ -24,14 +24,14 @@ export default class RPC {
 
         You'll need to setup the following RPC in your Postgres database:
         ```
-            # in the event you want to re-initialize the supashim database tables, uncomment these lines:
-            # DO $$ DECLARE
-            #   r RECORD;
-            # BEGIN
-            #   FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = current_schema() AND tablename LIKE 'supashim_%') LOOP
-            #       EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
-            #   END LOOP;
-            # END $$;
+            -- Note: In the event you want to re-initialize the supashim database tables, uncomment these lines to drop them:
+            -- DO $$ DECLARE
+            --   r RECORD;
+            -- BEGIN
+            --   FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = current_schema() AND tablename LIKE 'supashim_%') LOOP
+            --       EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
+            --   END LOOP;
+            -- END $$;
 
             CREATE OR REPLACE FUNCTION public.create_supashim_table(name TEXT)
             RETURNS TEXT

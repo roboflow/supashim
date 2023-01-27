@@ -29,7 +29,9 @@ const BATCH_SIZE = 10000;
 
 async.eachOfSeries(collections, copy, function () {
     out.end();
-    process.exit(0);
+    setTimeout(function () {
+        process.exit(0);
+    }, 1000);
 });
 
 function copy(tree, collection, cb) {

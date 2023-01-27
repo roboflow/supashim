@@ -33,6 +33,8 @@ stream
     .pipe(es.split())
     .pipe(
         es.mapSync(function (line) {
+            if (!line.length) return;
+
             linesToProcess.push(line);
             if (linesToProcess.length >= concurrency) {
                 var inFlight = linesToProcess;
@@ -52,6 +54,9 @@ stream
     .on("end", function () {
         processAll(linesToProcess, function () {
             console.log("Read entire file.", lines);
+            setTimeout(function () {
+                process.exit(0);
+            }, 1000);
         });
     });
 
@@ -61,7 +66,6 @@ function processAll(inFlight, cb) {
         function (line, cb) {
             lines++;
 
-            // PLACEHOLDER: insert the line into Supabase here
             const [path, data] = JSON.parse(line);
 
             const parts = path.split("/");
@@ -81,10 +85,17 @@ function processAll(inFlight, cb) {
                             .then(function () {
                                 cb(null);
                             })
-                            .catch(function () {
+                            .catch(function (e) {
+                                console.log(
+                                    "ERROR",
+                                    ref.parent.tableName(),
+                                    ref.parent.pathValues,
+                                    ref.id,
+                                    e
+                                );
                                 cb(null);
                             });
-                    }, 100);
+                    }, 500);
                 });
         },
         function () {
