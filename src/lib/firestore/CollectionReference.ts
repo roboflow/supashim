@@ -25,6 +25,7 @@ export default class CollectionReference {
     }
 
     where(prop, op, value) {
+        console.log(this.path, "where", prop, op, value);
         return this;
     }
 
