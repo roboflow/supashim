@@ -5,6 +5,7 @@ config/
 
 
 utils/*.jsonl
+utils/supabase.json
 utils/collections.json
 
 # Logs

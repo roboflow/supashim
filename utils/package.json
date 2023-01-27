@@ -12,6 +12,7 @@
         "async": "^3.2.4",
         "event-stream": "^4.0.1",
         "firebase-admin": "^11.5.0",
-        "lodash": "^4.17.21"
+        "lodash": "^4.17.21",
+        "node-fetch": "^2.6.8"
     }
 }

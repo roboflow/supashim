@@ -8,11 +8,13 @@ const globalSettings = Settings(true);
 
 export default class CollectionReference {
     public readonly path: string;
+    public readonly pathValues: string[];
     public readonly shim: FirestoreShim;
     public readonly db: any;
 
-    constructor(shim: FirestoreShim, path, pathValues = []) {
+    constructor(shim: FirestoreShim, path, pathValues: string[] = []) {
         this.path = path;
+        this.pathValues = pathValues;
 
         this.shim = shim;
         this.db = shim.client;

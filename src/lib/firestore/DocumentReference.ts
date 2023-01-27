@@ -1,5 +1,7 @@
 // https://firebase.google.com/docs/reference/js/v8/firebase.firestore.DocumentReference
 
+const _ = require("lodash");
+
 import CollectionReference from "./CollectionReference";
 import DocumentSnapshot from "./DocumentSnapshot";
 
@@ -25,7 +27,11 @@ export default class DocumentReference {
     }
 
     collection(path) {
-        return new CollectionReference(this.parent.shim, [this.parent.path, path].join(":"));
+        return new CollectionReference(
+            this.parent.shim,
+            [this.parent.path, path].join(":"),
+            _.concat(this.parent.pathValues, this.id)
+        );
     }
 
     onSnapshot(cb) {
@@ -82,7 +88,10 @@ export default class DocumentReference {
         // do an upsert
         const { data, error } = await this.db
             .from(this.parent.tableName())
-            .upsert({ id: this.id, data: val }, { onConflict: "path, id", ignoreDuplicates: false })
+            .upsert(
+                { path: this.parent.pathValues, id: this.id, data: val },
+                { onConflict: "path, id", ignoreDuplicates: false }
+            )
             .select();
 
         if (error && error.code === "42P01") {

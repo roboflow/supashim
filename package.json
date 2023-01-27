@@ -11,8 +11,9 @@
     "scripts": {
         "prepare": "husky install",
         "clean": "rimraf dist",
-        "build": "webpack",
+        "build:all": "webpack && npx tsc -p tsconfig.json",
         "build:dev": "webpack --env dev --mode=development --watch",
+        "build:node": "npx tsc -p tsconfig.json --watch",
         "test": "jest",
         "test:watch": "jest --watch --verbose false --silent false"
     },
