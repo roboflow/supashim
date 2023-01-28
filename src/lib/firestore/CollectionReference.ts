@@ -9,7 +9,7 @@ const globalSettings = Settings(true);
 
 export default class CollectionReference extends QueryReference {
     constructor(shim: FirestoreShim, path, pathValues: string[] = []) {
-        super(shim, path, pathValues);
+        super(shim, path, pathValues, []);
     }
 
     doc(id) {
