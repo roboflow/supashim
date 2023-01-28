@@ -7,6 +7,8 @@ import QuerySnapshot from "./QuerySnapshot";
 import Settings from "../Settings";
 const globalSettings = Settings(true);
 
+import RPC from "./RPC";
+
 export default class QueryReference {
     public readonly path: string;
     public readonly pathValues: string[];
@@ -52,6 +54,10 @@ export default class QueryReference {
 
     async get() {
         var query = this.db.from(this.tableName()).select("*");
+
+        if (this.pathValues.length) {
+            query = query.eq("path", JSON.stringify(this.pathValues));
+        }
 
         /*
             Example Queries:
@@ -101,7 +107,7 @@ export default class QueryReference {
         if (error && error.code === "42P01") {
             // table does not exist
             if (globalSettings().autoCreateTables) {
-                const { data, error } = await RPC.create_supashim_table(this.parent.tableName());
+                const { data, error } = await RPC.create_supashim_table(this.tableName());
 
                 // retry if table was created
                 if (!error) {
