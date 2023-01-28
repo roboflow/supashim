@@ -51,29 +51,19 @@ export default class QueryReference {
 
         /*
             Example Queries:
-            SELECT * FROM supashim_workspaces WHERE data->'roles'->'eF616TpNiRbl6MniCL8FOD4rXX32' IN ('"owner"', '"labeler"')
-            SELECT * FROM supashim_workspaces WHERE data#>>'{roles,eF616TpNiRbl6MniCL8FOD4rXX32}' IN ('owner', 'labeler')
+            SELECT * FROM supashim_workspaces WHERE data->'roles'->>'eF616TpNiRbl6MniCL8FOD4rXX32' IN ('owner', 'labeler')
         */
 
         _.each(this.filters, function (filter) {
-            // var fieldPath = "data";
-            // var fieldPath = _.concat(
-            //     "data",
-            //     _.map(filter.fieldPath.split("."), function (part) {
-            //         return `'${part}'`;
-            //     }).join("->")
-            // );
+            var firstParts = filter.fieldPath.split(".");
 
-            var fieldPath = `data#>>'{${filter.fieldPath.replace(/\./g, ",")}}'`;
+            var last = firstParts.pop();
 
-            // var value = _.map(filter.value, function (value) {
-            //     // return `'${JSON.stringify(_.set({}, filter.fieldPath, value))}'::jsonb`;
-            //     return _.set({}, filter.fieldPath, value);
-            // });
+            var fieldPath = _.concat("data", firstParts).join("->") + "->>" + last;
 
-            var value = filter.value;
-
-            // debugger;
+            var value = _.map(filter.value, function (value) {
+                return `${value}`;
+            });
 
             if (filter.opStr === "==") {
                 query = query.eq(fieldPath, value);
@@ -93,10 +83,9 @@ export default class QueryReference {
                 query = query.contains(fieldPath, value);
             } else if (filter.opStr === "in") {
                 query = query.in(fieldPath, value);
-            } /*else if (filter.opStr === "not-in") {
-                // TODO: notIn is not implemented
-                query = query.notIn(fieldPath, value);
-            }*/ else {
+            } else if (filter.opStr === "not-in") {
+                query = query.not(fieldPath, "in", `(${value}.join(",")})`);
+            } else {
                 throw new Error("Invalid filter operator: " + filter.opStr);
             }
         });
@@ -119,7 +108,6 @@ export default class QueryReference {
             throw new Error(error.message);
         }
 
-        // debugger;
         return new QuerySnapshot(this, data || []);
     }
 }
