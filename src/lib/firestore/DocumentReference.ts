@@ -40,7 +40,7 @@ export default class DocumentReference {
         // hack until we get realtime wired up
         const _this = this;
         var previousValue = undefined;
-        var interval = setInterval(function () {
+        var go = function () {
             _this.get(true).then(function (snapshot) {
                 if (previousValue !== snapshot._data) {
                     console.log(_this.parent.path, snapshot.id, snapshot._data);
@@ -48,7 +48,9 @@ export default class DocumentReference {
                 }
                 previousValue = snapshot._data;
             });
-        }, 2500);
+        };
+        var interval = setInterval(go, 10000);
+        go();
 
         return function () {
             clearInterval(interval);

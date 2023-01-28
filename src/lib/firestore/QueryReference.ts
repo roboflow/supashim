@@ -44,6 +44,10 @@ export default class QueryReference {
         this.get().then(function (snapshot) {
             cb(snapshot);
         });
+
+        return function () {
+            // nothing to unsubscribe to currently
+        };
     }
 
     async get() {
