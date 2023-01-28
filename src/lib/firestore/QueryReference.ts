@@ -61,9 +61,11 @@ export default class QueryReference {
 
             var fieldPath = _.concat("data", firstParts).join("->") + "->>" + last;
 
-            var value = _.map(filter.value, function (value) {
-                return `${value}`;
-            });
+            var value = _.isArray(filter.value)
+                ? _.map(filter.value, function (value) {
+                      return `${value}`;
+                  })
+                : filter.value;
 
             if (filter.opStr === "==") {
                 query = query.eq(fieldPath, value);
