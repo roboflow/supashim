@@ -1,5 +1,7 @@
 // https://firebase.google.com/docs/reference/js/v8/firebase.firestore.DocumentSnapshot
 
+const _ = require("lodash");
+
 import DocumentReference from "./DocumentReference";
 
 export default class DocumentSnapshot {
@@ -16,5 +18,10 @@ export default class DocumentSnapshot {
     data() {
         if (!this._data) return null;
         return JSON.parse(this._data);
+    }
+
+    get(fieldPath: string) {
+        if (!this._data) return undefined;
+        return _.get(JSON.parse(this._data), fieldPath);
     }
 }
