@@ -3,7 +3,6 @@
 config/
 .env.local
 
-
 utils/*.jsonl
 utils/supabase.json
 utils/collections.json
