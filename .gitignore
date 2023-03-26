@@ -1,6 +1,11 @@
 .DS_STORE
+.DS_Store
 config/
 .env.local
+
+utils/*.jsonl
+utils/supabase.json
+utils/collections.json
 
 # Logs
 logs
