@@ -1,4 +1,4 @@
-# supashim
+![supashim](assets/supashim-banner.webp)
 
 Package Firebase apps for self-hosting by using
 [Supabase](https://supabase.com/) as a drop-in replacement for
